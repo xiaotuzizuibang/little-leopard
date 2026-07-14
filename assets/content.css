@@ -1,0 +1,499 @@
+/* Translation Box Styles */
+.word-translator-box {
+  position: fixed;
+  width: 340px;
+  max-width: 90vw;
+  background: rgba(255,249,230,0.98);
+  border: 1px solid rgba(91,58,41,0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  animation: fadeInUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: box-shadow 0.2s ease;
+}
+
+.word-translator-box:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header with Leopard Pattern */
+.translator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: linear-gradient(145deg, #D4A017, #B8860B);
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+  font-weight: 700;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  cursor: move;
+}
+
+.translator-header:active {
+  cursor: grabbing;
+  background: linear-gradient(145deg, #E5B93C, #C1902C);
+}
+
+/* Leopard spots in header */
+.translator-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 10px 10px, rgba(91,58,41,0.15) 2px, transparent 0) repeat;
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.translator-title {
+  position: relative;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  z-index: 1;
+}
+
+.translator-close {
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  font-weight: 700;
+  z-index: 1;
+}
+
+.translator-close:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: rotate(90deg) scale(1.15);
+}
+
+.translator-content {
+  padding: 18px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: rgba(255,249,230,0.98);
+}
+
+.translator-loading {
+  text-align: center;
+  color: #5B3A29;
+  padding: 24px 0;
+  font-weight: 500;
+}
+
+.translator-loading::after {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 10px;
+  border: 3px solid #D4A017;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.translator-source,
+.translator-result {
+  margin-bottom: 14px;
+}
+
+.translator-result {
+  margin-bottom: 0;
+}
+
+.translator-label {
+  font-size: 12px;
+  color: #5B3A29;
+  margin-bottom: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.3px;
+}
+
+.translator-speak-btn {
+  background: rgba(255,249,230,0.95);
+  border: 2px solid #D4A017;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.translator-speak-btn:hover {
+  background: linear-gradient(145deg, rgba(212,160,23,0.15), rgba(241,194,125,0.25));
+  border-color: #B8860B;
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.translator-speak-btn:active {
+  transform: scale(0.98);
+}
+
+.translator-text {
+  color: #5B3A29;
+  padding: 12px 14px;
+  background: rgba(255,249,230,0.95);
+  border: 1px solid rgba(91,58,41,0.2);
+  border-radius: 8px;
+  word-wrap: break-word;
+  line-height: 1.7;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.translator-result .translator-text {
+  background: rgba(255,249,230,0.98);
+  color: #5B3A29;
+  font-weight: 600;
+  border: 2px solid #D4A017;
+  box-shadow: 0 3px 8px rgba(212, 160, 23, 0.2);
+}
+
+.translator-error {
+  color: #D84315;
+  padding: 14px;
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid rgba(216, 67, 21, 0.3);
+}
+
+/* Scrollbar Styling */
+.translator-content::-webkit-scrollbar {
+  width: 7px;
+}
+
+.translator-content::-webkit-scrollbar-track {
+  background: rgba(241, 194, 125, 0.2);
+  border-radius: 4px;
+}
+
+.translator-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D4A017 0%, #E5B93C 100%);
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.translator-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #E5B93C 0%, #D4A017 100%);
+}
+
+/* Highlight Styles */
+.xiaobao-highlight {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 3px;
+  padding: 2px 0;
+  box-shadow: 0 2px 4px rgba(255, 241, 118, 0.3);
+}
+
+.xiaobao-highlight:hover {
+  filter: brightness(0.92);
+  box-shadow: 0 3px 8px rgba(255, 241, 118, 0.5);
+  transform: translateY(-1px);
+}
+
+.xiaobao-highlight.removing {
+  animation: fadeOutHighlight 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeOutHighlight {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+/* Highlight Notification */
+.highlight-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: linear-gradient(145deg, #D4A017, #B8860B);
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  z-index: 2147483646;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  animation: slideInRight 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Leopard spots in notification */
+.highlight-notification::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 10px 10px, rgba(91,58,41,0.15) 2px, transparent 0) repeat;
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(120px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.highlight-notification.fade-out {
+  animation: fadeOut 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Translate Box Success Animation */
+.translator-result {
+  animation: resultSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes resultSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.xiaobao-arxiv-entry-row {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(91,58,41,0.12);
+}
+
+.xiaobao-arxiv-entry {
+  display: inline-block;
+  color: #5B3A29 !important;
+  background: linear-gradient(145deg, #FFF4CC, #F3C85B);
+  border: 1px solid rgba(91,58,41,0.22);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-weight: 700;
+  text-decoration: none !important;
+  box-shadow: 0 2px 5px rgba(91,58,41,0.12);
+}
+
+.xiaobao-arxiv-entry:hover {
+  color: #3D281D !important;
+  background: linear-gradient(145deg, #FFE7A3, #E8B32F);
+}
+
+.xiaobao-arxiv-toolbar {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483645;
+  width: min(460px, calc(100vw - 40px));
+  background: rgba(255,249,230,0.98);
+  color: #5B3A29;
+  border: 1px solid rgba(91,58,41,0.18);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  padding: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  box-sizing: border-box;
+}
+
+.xiaobao-arxiv-toolbar-main {
+  display: grid;
+  gap: 7px;
+}
+
+.xiaobao-arxiv-toolbar-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.xiaobao-arxiv-toolbar-status {
+  font-size: 12px;
+  color: rgba(91,58,41,0.78);
+}
+
+.xiaobao-arxiv-progress {
+  height: 7px;
+  overflow: hidden;
+  background: rgba(91,58,41,0.12);
+  border-radius: 999px;
+}
+
+.xiaobao-arxiv-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #D4A017, #F3C85B);
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+.xiaobao-arxiv-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.xiaobao-arxiv-toolbar-button {
+  appearance: none;
+  border: 1px solid rgba(91,58,41,0.2);
+  border-radius: 8px;
+  background: #fff8df;
+  color: #5B3A29;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  transition: all 0.2s ease;
+}
+
+.xiaobao-arxiv-toolbar-button:hover {
+  background: #F3C85B;
+  transform: translateY(-1px);
+}
+
+.xiaobao-arxiv-translation {
+  color: #222;
+  font-family: 'Times New Roman', 'Noto Serif SC', 'Songti SC', SimSun, serif;
+  font-size: 0.98em;
+  line-height: 1.65;
+  margin: 0.35em 0 1.05em 0;
+  padding-left: 0.9em;
+  border-left: 3px solid #D4A017;
+  white-space: pre-wrap;
+}
+
+.xiaobao-arxiv-translation .xiaobao-arxiv-restored-token {
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0 0.12em;
+  white-space: normal;
+}
+
+.xiaobao-arxiv-translation math.xiaobao-arxiv-restored-token,
+.xiaobao-arxiv-translation .ltx_Math.xiaobao-arxiv-restored-token,
+.xiaobao-arxiv-translation .MathJax.xiaobao-arxiv-restored-token,
+.xiaobao-arxiv-translation .katex.xiaobao-arxiv-restored-token {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.xiaobao-arxiv-translation .ltx_ref.xiaobao-arxiv-restored-token,
+.xiaobao-arxiv-translation .ltx_cite.xiaobao-arxiv-restored-token {
+  color: #1A5FB4;
+}
+
+.xiaobao-arxiv-translation .xiaobao-arxiv-restored-token[data-xiaobao-token-kind="REF"],
+.xiaobao-arxiv-translation .xiaobao-arxiv-restored-token[data-xiaobao-token-kind="CITE"] {
+  color: #1A5FB4;
+  text-decoration: none;
+}
+
+.xiaobao-arxiv-source-loading {
+  position: relative;
+}
+
+.xiaobao-arxiv-source-loading::after {
+  content: ' 小豹翻译中...';
+  color: #B8860B;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.xiaobao-arxiv-translation-error {
+  color: #B71C1C;
+  background: #FFEBEE;
+  border-left-color: #D84315;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+body.xiaobao-arxiv-mode-translation .xiaobao-arxiv-source-translated {
+  display: none !important;
+}
+
+body.xiaobao-arxiv-mode-source .xiaobao-arxiv-translation {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .xiaobao-arxiv-toolbar {
+    right: 10px;
+    bottom: 10px;
+    width: calc(100vw - 20px);
+  }
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试标记功能</title>
+  <style>
+    body {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    h1 {
+      color: #D4A017;
+      border-bottom: 3px solid #D4A017;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border-left: 5px solid #4CAF50;
+    }
+    .instructions {
+      background: #FFF8E1;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 2px dashed #D4A017;
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #B8860B;
+    }
+    .instructions ul {
+      margin: 10px 0;
+      padding-left: 25px;
+    }
+    .instructions li {
+      margin: 8px 0;
+    }
+    kbd {
+      background: #5B3A29;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐆 标记功能测试页面</h1>
+  
+  <div class="instructions">
+    <h3>📋 测试步骤</h3>
+    <ul>
+      <li><strong>步骤1：</strong> 选中下面的任意文本</li>
+      <li><strong>步骤2：</strong> 按快捷键添加标记：
+        <ul>
+          <li><kbd>Ctrl+L</kbd> - 💡 学到了</li>
+          <li><kbd>Ctrl+Q</kbd> - ❓ 不理解</li>
+          <li><kbd>Ctrl+D</kbd> - ✂️ 跳过</li>
+        </ul>
+      </li>
+      <li><strong>步骤3：</strong> 点击浏览器工具栏的 🐆 图标</li>
+      <li><strong>步骤4：</strong> 点击 <strong>"📋 View All"</strong> 查看标记</li>
+      <li><strong>步骤5：</strong> 点击 <strong>"📖 History"</strong> 查看完整历史</li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <h2>测试内容 1：深度学习基础</h2>
+    <p>
+      深度学习是机器学习的一个分支，它使用多层神经网络来学习数据的表示。
+      深度学习在计算机视觉、自然语言处理和语音识别等领域取得了突破性进展。
+    </p>
+    <p>
+      <strong>选中这句话试试：</strong>反向传播算法是训练神经网络的核心方法，通过链式法则计算梯度。
+    </p>
+  </div>
+
+  <div class="test-section">
+    <h2>测试内容 2：Transformer 架构</h2>
+    <p>
+      Transformer 是一种基于自注意力机制的深度学习模型架构，由 Vaswani 等人在 2017 年提出。
+      它完全抛弃了循环神经网络（RNN）和卷积神经网络（CNN），仅使用注意力机制来处理序列数据。
+    </p>
+    <p>
+      <strong>这是一个重要概念：</strong>多头自注意力机制允许模型同时关注序列中不同位置的信息，
+      每个注意力头可以学习不同的表示子空间。
+    </p>
+    <p>
+      <strong>这可能比较难理解：</strong>位置编码（Positional Encoding）使用正弦和余弦函数为每个位置生成唯一的向量，
+      使得模型能够感知序列中的位置信息。
+    </p>
+  </div>
+
+  <div class="test-section">
+    <h2>测试内容 3：BERT 预训练</h2>
+    <p>
+      BERT（Bidirectional Encoder Representations from Transformers）是一种预训练语言模型。
+      它通过掩码语言模型（MLM）和下一句预测（NSP）两个任务进行预训练。
+    </p>
+    <p>
+      <strong>重要细节：</strong>BERT 使用 WordPiece 分词，词汇表大小为 30,000。
+      模型包括 Base（110M 参数）和 Large（340M 参数）两个版本。
+    </p>
+    <p>
+      <strong>可以跳过的内容：</strong>BERT 的训练使用了 BooksCorpus（800M 词）和英文维基百科（2,500M 词）。
+      训练硬件是 4 个 Cloud TPU（共 16 个 TPU 芯片），训练时间为 4 天。
+    </p>
+  </div>
+
+  <div class="test-section">
+    <h2>测试内容 4：注意力机制公式</h2>
+    <p>
+      <strong>数学公式：</strong>注意力机制的核心公式为：
+    </p>
+    <p style="background: white; padding: 15px; border-radius: 5px; font-family: monospace;">
+      Attention(Q, K, V) = softmax(QK^T / √d_k) * V
+    </p>
+    <p>
+      其中 Q（Query）、K（Key）、V（Value）是输入的线性变换，d_k 是键向量的维度。
+      除以 √d_k 是为了防止点积过大导致 softmax 函数梯度消失。
+    </p>
+  </div>
+
+  <div class="test-section">
+    <h2>测试内容 5：实践建议</h2>
+    <p>
+      <strong>选中并标记有用的建议：</strong>
+    </p>
+    <ul>
+      <li>使用预训练模型可以显著提高模型性能，减少训练时间</li>
+      <li>数据增强是提高模型泛化能力的有效方法</li>
+      <li>学习率调度（如 warmup）对大规模模型训练至关重要</li>
+      <li>Dropout 和 Layer Normalization 有助于防止过拟合</li>
+      <li>梯度裁剪可以防止梯度爆炸问题</li>
+    </ul>
+  </div>
+
+  <div class="instructions">
+    <h3>✅ 验证清单</h3>
+    <ul>
+      <li>□ 标记后文本有高亮显示</li>
+      <li>□ 点击 View All 能看到所有标记</li>
+      <li>□ 可以搜索标记内容</li>
+      <li>□ 可以按类型筛选（💡/❓/✂️）</li>
+      <li>□ 点击 🔗 能跳转回本页面</li>
+      <li>□ 点击 History 能看到历史页面</li>
+      <li>□ 可以导出 Markdown</li>
+      <li>□ 可以导出和导入 JSON</li>
+      <li>□ Alt+点击可以删除标记</li>
+    </ul>
+  </div>
+
+  <div style="background: #E3F2FD; padding: 20px; border-radius: 8px; margin-top: 30px;">
+    <h3>🎯 测试目标</h3>
+    <p>确保以下功能正常工作：</p>
+    <ol>
+      <li><strong>标记创建：</strong> 使用 Ctrl+L/Q/D 快捷键添加不同类型的标记</li>
+      <li><strong>标记保存：</strong> 刷新页面后标记仍然存在</li>
+      <li><strong>标记查看：</strong> 在 popup 和 history 页面都能看到标记</li>
+      <li><strong>搜索功能：</strong> 能够搜索并找到标记的内容</li>
+      <li><strong>数据持久化：</strong> 关闭浏览器重新打开后标记仍在</li>
+    </ol>
+  </div>
+
+  <script>
+    console.log('🐆 测试页面已加载');
+    console.log('📍 当前 URL:', window.location.href);
+    
+    // 监听存储变化
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (namespace === 'sync' && changes.markers) {
+        console.log('📚 Markers updated:', changes.markers.newValue?.length || 0);
+      }
+    });
+    
+    // 显示当前存储的标记数量
+    chrome.storage.sync.get(['markers'], (result) => {
+      console.log('📊 Current markers count:', result.markers?.length || 0);
+    });
+  </script>
+</body>
+</html>
+

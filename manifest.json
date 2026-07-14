@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "小豹翻译",
+  "version": "1.0.0",
+  "description": "🐆 选中文字即可翻译，支持中英互译，豹纹主题",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "system.display"
+  ],
+  "host_permissions": [
+    "https://translate.googleapis.com/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["assets/content.css"],
+      "run_at": "document_end",
+      "match_about_blank": true,
+      "all_frames": true
+    },
+    {
+      "matches": ["https://arxiv.org/abs/*", "https://ar5iv.labs.arxiv.org/html/*"],
+      "js": ["scripts/arxiv-reader.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["file://*/*.pdf"],
+      "js": ["content.js"],
+      "css": ["assets/content.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}
+

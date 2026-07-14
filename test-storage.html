@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storage Test - Little Leopard</title>
+  <style>
+    body {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #D4A017;
+      border-bottom: 3px solid #D4A017;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    button {
+      background: linear-gradient(145deg, #D4A017, #B8860B);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 5px;
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212,160,23,0.3);
+    }
+    button.danger {
+      background: linear-gradient(145deg, #FF6B6B, #EE5A52);
+    }
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background: #e3f2fd;
+      border-left: 4px solid #2196F3;
+      border-radius: 4px;
+      display: none;
+    }
+    .result.show {
+      display: block;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: linear-gradient(145deg, #FFF8E1, #FFE082);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #B8860B;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐆 Storage Test Tool</h1>
+
+  <div class="test-section">
+    <h2>📊 Current Statistics</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalMarkers">0</div>
+        <div class="stat-label">Total Markers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="learnedMarkers">0</div>
+        <div class="stat-label">💡 Learned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="questionMarkers">0</div>
+        <div class="stat-label">❓ Questions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="storageUsed">0</div>
+        <div class="stat-label">KB Used</div>
+      </div>
+    </div>
+    <button onclick="updateStats()">🔄 Refresh Stats</button>
+  </div>
+
+  <div class="test-section">
+    <h2>🧪 Quick Tests</h2>
+    <button onclick="testAddMarker()">➕ Add Test Marker</button>
+    <button onclick="viewAllMarkers()">👁️ View All Markers</button>
+    <button onclick="viewStorage()">💾 View Storage Data</button>
+    <button onclick="testSearch()">🔍 Test Search</button>
+  </div>
+
+  <div class="test-section">
+    <h2>🛠️ Debug Tools</h2>
+    <button onclick="checkMarkerManager()">Check MarkerManager</button>
+    <button onclick="testStorageAPI()">Test Storage API</button>
+    <button onclick="simulateMarkerFlow()">Simulate Full Flow</button>
+  </div>
+
+  <div class="test-section">
+    <h2>⚠️ Cleanup</h2>
+    <button class="danger" onclick="clearMarkers()">🗑️ Clear All Markers</button>
+    <button class="danger" onclick="clearAllStorage()">💣 Clear All Storage</button>
+  </div>
+
+  <div class="test-section">
+    <h2>📋 Output</h2>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    // Update statistics
+    function updateStats() {
+      chrome.storage.sync.get(['markers'], (result) => {
+        const markers = result.markers || [];
+        const learned = markers.filter(m => m.type === 'learned' || m.type === 'highlight').length;
+        const question = markers.filter(m => m.type === 'question').length;
+        
+        document.getElementById('totalMarkers').textContent = markers.length;
+        document.getElementById('learnedMarkers').textContent = learned;
+        document.getElementById('questionMarkers').textContent = question;
+        
+        chrome.storage.sync.getBytesInUse(null, (bytes) => {
+          document.getElementById('storageUsed').textContent = (bytes / 1024).toFixed(2);
+        });
+        
+        showResult(`✅ Stats updated: ${markers.length} markers found`);
+      });
+    }
+
+    // Add a test marker
+    function testAddMarker() {
+      const testMarker = {
+        id: `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        text: `Test marker created at ${new Date().toLocaleTimeString()}`,
+        type: 'learned',
+        color: '#FFF176',
+        note: 'This is a test marker',
+        url: window.location.href,
+        timestamp: Date.now(),
+        dateString: new Date().toLocaleString()
+      };
+
+      chrome.storage.sync.get(['markers'], (result) => {
+        const markers = result.markers || [];
+        markers.unshift(testMarker);
+        
+        chrome.storage.sync.set({ markers }, () => {
+          showResult(`✅ Test marker added!\nID: ${testMarker.id}\nTotal markers: ${markers.length}`);
+          updateStats();
+        });
+      });
+    }
+
+    // View all markers
+    function viewAllMarkers() {
+      chrome.storage.sync.get(['markers'], (result) => {
+        const markers = result.markers || [];
+        const output = markers.length > 0 
+          ? JSON.stringify(markers, null, 2)
+          : 'No markers found';
+        showResult(`📚 Found ${markers.length} markers:\n\n${output}`);
+      });
+    }
+
+    // View all storage data
+    function viewStorage() {
+      chrome.storage.sync.get(null, (items) => {
+        showResult(`💾 Storage contents:\n\n${JSON.stringify(items, null, 2)}`);
+      });
+    }
+
+    // Test search functionality
+    function testSearch() {
+      const searchTerm = prompt('Enter search term:', 'test');
+      if (!searchTerm) return;
+
+      chrome.storage.sync.get(['markers'], (result) => {
+        const markers = result.markers || [];
+        const filtered = markers.filter(m => 
+          m.text.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        showResult(`🔍 Search results for "${searchTerm}":\nFound ${filtered.length} matches\n\n${JSON.stringify(filtered, null, 2)}`);
+      });
+    }
+
+    // Check if MarkerManager exists
+    function checkMarkerManager() {
+      if (typeof markerManager !== 'undefined') {
+        showResult(`✅ MarkerManager exists!\n\nmarkers: ${markerManager.markers?.length || 0}\ncurrentFilter: ${markerManager.currentFilter}\ncurrentSearchTerm: ${markerManager.currentSearchTerm}`);
+      } else {
+        showResult(`❌ MarkerManager not found!\n\nThis is expected - MarkerManager only exists in popup/standalone pages, not in content pages.`);
+      }
+    }
+
+    // Test storage API
+    function testStorageAPI() {
+      const testData = { test: 'Hello from storage test!' };
+      
+      chrome.storage.sync.set(testData, () => {
+        chrome.storage.sync.get(['test'], (result) => {
+          if (result.test === testData.test) {
+            showResult(`✅ Storage API working!\nWrite: OK\nRead: OK\nData: ${result.test}`);
+          } else {
+            showResult(`❌ Storage API problem!\nExpected: ${testData.test}\nGot: ${result.test}`);
+          }
+          
+          // Cleanup
+          chrome.storage.sync.remove('test');
+        });
+      });
+    }
+
+    // Simulate full marker flow
+    function simulateMarkerFlow() {
+      showResult('🔄 Simulating full marker flow...\n\nStep 1: Creating marker...');
+      
+      setTimeout(() => {
+        testAddMarker();
+        showResult('Step 2: Marker added\n\nStep 3: Loading markers...');
+        
+        setTimeout(() => {
+          chrome.storage.sync.get(['markers'], (result) => {
+            const markers = result.markers || [];
+            showResult(`✅ Flow complete!\n\nTotal markers: ${markers.length}\nLatest marker:\n${JSON.stringify(markers[0], null, 2)}`);
+          });
+        }, 500);
+      }, 500);
+    }
+
+    // Clear all markers
+    function clearMarkers() {
+      if (!confirm('Clear all markers?')) return;
+      
+      chrome.storage.sync.set({ markers: [] }, () => {
+        showResult('🗑️ All markers cleared!');
+        updateStats();
+      });
+    }
+
+    // Clear all storage
+    function clearAllStorage() {
+      if (!confirm('⚠️ This will delete ALL extension data! Continue?')) return;
+      
+      chrome.storage.sync.clear(() => {
+        chrome.storage.local.clear(() => {
+          showResult('💣 All storage cleared!');
+          updateStats();
+        });
+      });
+    }
+
+    // Show result
+    function showResult(text) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = text;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Initialize
+    updateStats();
+    console.log('🐆 Storage Test Tool loaded!');
+    console.log('💡 Tip: Open browser console (F12) for more details');
+  </script>
+</body>
+</html>
+

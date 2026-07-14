@@ -1,0 +1,193 @@
+# 🧪 翻译乱码修复 - 测试用例
+
+## 使用方法
+复制下面的测试文本到小豹翻译，检查是否有乱码问题。
+
+---
+
+## 测试1：专业术语保护
+```
+The transformer model uses multi-head attention and self-attention mechanisms to process natural language. Deep learning has revolutionized machine learning through neural networks.
+```
+
+**预期结果：**
+- ✅ "Transformer" 应保持原样或翻译为"Transformer"
+- ✅ "多头注意力" 正确显示
+- ✅ "深度学习" 和 "神经网络" 正确显示
+- ❌ 不应出现 `XTERM5X` 这样的占位符
+- ❌ 不应出现 `__TERM_` 这样的标记
+
+---
+
+## 测试2：HTML实体问题
+（这个无法直接测试，因为API可能不返回HTML实体。如果遇到乱码，控制台会显示原始值）
+
+**检查项：**
+- ✅ 引号应显示为 `"` 而不是 `&quot;`
+- ✅ And符号应显示为 `&` 而不是 `&amp;`
+- ✅ 撇号应显示为 `'` 而不是 `&#39;`
+
+---
+
+## 测试3：中英文混合
+```
+在PyTorch和TensorFlow中训练neural network需要使用GPU加速。BERT和GPT是最popular的large language model。
+```
+
+**预期结果：**
+- ✅ 框架名称（PyTorch、TensorFlow）保持原样
+- ✅ "neural network" 翻译为"神经网络"
+- ✅ "GPU" 保持原样
+- ✅ 整体翻译流畅，无乱码
+
+---
+
+## 测试4：多次出现相同术语
+```
+Deep learning is based on neural networks. Deep learning models like convolutional neural network and recurrent neural network have different architectures.
+```
+
+**预期结果：**
+- ✅ 两次出现的 "deep learning" 都正确翻译
+- ✅ 三次出现的 "neural network" 都正确处理
+- ✅ 专有名词保持一致
+- ❌ 不应出现部分翻译、部分乱码的情况
+
+---
+
+## 测试5：长文本（综合测试）
+```
+Artificial intelligence and machine learning have transformed computer vision and natural language processing. Modern deep learning frameworks like PyTorch enable researchers to implement complex models such as transformer-based architectures. The attention mechanism, especially self-attention in BERT and GPT, has become the foundation of state-of-the-art language models. Training these models requires significant GPU resources and large datasets for pre-training and fine-tuning.
+```
+
+**预期结果：**
+- ✅ 整段翻译完整、流畅
+- ✅ 所有专业术语正确处理
+- ✅ 没有乱码或占位符残留
+- ✅ 标点符号正确
+- ✅ 空格和换行正确
+
+---
+
+## 测试6：中文翻译英文（反向测试）
+```
+深度学习使用神经网络进行训练。卷积神经网络在计算机视觉领域表现出色，而循环神经网络适合处理序列数据。注意力机制，特别是Transformer中的自注意力，已经成为自然语言处理的核心技术。
+```
+
+**预期结果：**
+- ✅ "深度学习" → "deep learning"
+- ✅ "神经网络" → "neural network"
+- ✅ "Transformer" 保持原样
+- ✅ 翻译准确、无遗漏
+
+---
+
+## 常见乱码模式（如果出现，说明有问题）
+
+### ❌ 问题1：占位符残留
+```
+The XTERM5X model uses XTERM8X mechanism
+```
+**原因**：术语恢复失败
+
+### ❌ 问题2：HTML实体
+```
+这是&quot;引用&quot;的例子
+```
+**原因**：HTML实体未解码
+
+### ❌ 问题3：字符重复
+```
+深深度度学学习习
+```
+**原因**：多次替换导致重复
+
+### ❌ 问题4：术语被翻译
+```
+变压器模型使用多头注意
+```
+**原因**："transformer" 被错误翻译为"变压器"
+
+### ❌ 问题5：空格异常
+```
+深度学     习    和   机器   学习
+```
+**原因**：零宽字符或空格未清理
+
+---
+
+## 调试方法
+
+### 1. 查看控制台日志
+1. 右键点击扩展图标
+2. 选择"检查弹出内容"
+3. 打开 Console 标签
+4. 查找 `🐆` 开头的日志
+
+**关键日志：**
+```
+🐆 Translation request: { text: "...", sourceLang: "auto", targetLang: "zh-CN" }
+🐆 Protected English terms
+🐆 Sending parallel requests to all translators...
+🐆 Translation successful in XXXms using Google!
+🐆 Original: The transformer model...
+🐆 Translated: Transformer模型...
+```
+
+### 2. 检查缓存状态
+如果翻译结果显示 `⚡` 符号，说明使用了缓存。清除缓存方法：
+- 关闭并重新打开扩展
+- 等待1小时缓存自动过期
+- 重新加载扩展
+
+### 3. 测试不同翻译提供商
+查看日志中的 `provider` 字段：
+- `Google` - Google Translate
+- `MyMemory` - MyMemory API
+- `LibreTranslate` - LibreTranslate API
+
+不同提供商可能有不同的表现。
+
+---
+
+## 性能检查
+
+### 正常指标
+- ⏱️ 翻译时间：500ms - 3000ms
+- 📊 缓存命中：第二次翻译相同内容应显示 `⚡`
+- ✅ 成功率：>95%
+
+### 异常指标
+- ⚠️ 超时：>8000ms
+- ❌ 失败：显示 "All translation services are currently unavailable"
+- 🐌 过慢：>5000ms
+
+---
+
+## 报告问题
+
+如果测试发现问题，请记录：
+
+1. **测试文本**：哪段文本出现问题
+2. **翻译结果**：实际显示的内容（截图更好）
+3. **控制台日志**：复制相关的日志
+4. **翻译方向**：中→英 还是 英→中
+5. **提供商**：哪个API返回的结果
+6. **是否缓存**：有没有 `⚡` 符号
+
+---
+
+## 成功标准
+
+✅ **所有测试通过的标志：**
+1. 无占位符残留（`XTERM`、`__TERM_`）
+2. 无HTML实体（`&quot;`、`&amp;`）
+3. 专业术语正确保护
+4. 翻译流畅、准确
+5. 无空格/换行异常
+6. 中英文都能正常翻译
+
+---
+
+**祝测试顺利！** 🐆✨
+

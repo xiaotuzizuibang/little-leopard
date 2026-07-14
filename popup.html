@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小豹翻译</title>
+  <link rel="stylesheet" href="assets/popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>🐆 Little Leopard Translator</h1>
+      <p class="header-tip">Select text to translate | <kbd>Ctrl+Q</kbd> Shortcut</p>
+      <button id="openWindowBtn" class="open-window-btn" title="Open in new window (stay open)">
+        📌 Pin Window
+      </button>
+    </div>
+
+    <div class="highlight-section">
+      <h2>📚 Reading Markers</h2>
+      
+      <!-- Marker Type Selection -->
+      <div class="marker-types">
+        <button class="marker-type-btn active" data-type="learned" data-color="#FFF176" title="What I Learned">
+          💡 Learned
+        </button>
+        <button class="marker-type-btn" data-type="question" data-color="#FF6B6B" title="Don't Understand">
+          ❓ Question
+        </button>
+        <button class="marker-type-btn" data-type="strikethrough" data-color="#999999" title="Delete/Not Important">
+          ✂️ Delete
+        </button>
+      </div>
+      
+      <!-- Marker Controls -->
+      <div class="marker-controls">
+        <label class="toggle-container">
+          <input type="checkbox" id="highlightToggle">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Enable Marker Mode</span>
+        </label>
+        
+        <button id="viewMarkersBtn" class="view-markers-btn">
+          📋 View All (<span id="markerCount">0</span>)
+        </button>
+      </div>
+      
+      <p class="highlight-tip">
+        💡 <kbd>Ctrl+L</kbd> Learned | <kbd>Ctrl+Q</kbd> Question | <kbd>Ctrl+D</kbd> Delete | <kbd>Alt+Click</kbd> Remove
+      </p>
+    </div>
+
+    <!-- Marker List Panel (Hidden by default) -->
+    <div id="markerListPanel" class="marker-list-panel" style="display: none;">
+      <div class="panel-header">
+        <h3>📚 My Markers</h3>
+        <button id="closeMarkerPanel" class="close-panel-btn">✕</button>
+      </div>
+      
+      <!-- Search Bar -->
+      <div class="marker-search">
+        <input 
+          type="text" 
+          id="markerSearchInput" 
+          placeholder="🔍 Search markers..." 
+          class="marker-search-input"
+        />
+      </div>
+      
+      <!-- View Options -->
+      <div class="marker-view-options">
+        <label class="view-option">
+          <input type="checkbox" id="groupByUrlToggle">
+          <span>📑 Group by URL</span>
+        </label>
+      </div>
+      
+      <div class="marker-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="learned">💡</button>
+        <button class="filter-btn" data-filter="question">❓</button>
+        <button class="filter-btn" data-filter="strikethrough">✂️</button>
+      </div>
+      
+      <div id="markerListContent" class="marker-list-content">
+        <!-- Markers will be dynamically inserted here -->
+      </div>
+      
+      <div class="panel-footer">
+        <button id="exportMarkersBtn" class="export-btn" title="Export as Markdown file">
+          💾 Markdown
+        </button>
+        <button id="exportJsonBtn" class="export-btn" title="Export as JSON (backup)">
+          📦 JSON
+        </button>
+        <button id="importJsonBtn" class="export-btn" title="Import from JSON">
+          📥 Import
+        </button>
+        <button id="openHistoryBtn" class="export-btn" title="Open full history page">
+          📖 History
+        </button>
+        <button id="clearAllMarkersBtn" class="clear-all-btn">
+          🗑️ Clear
+        </button>
+      </div>
+      <input type="file" id="importJsonFile" accept=".json" style="display: none;">
+    </div>
+
+    <div class="translate-section">
+      <h2>⚡ Quick Translate</h2>
+      <div class="mode-selector">
+        <label class="mode-option">
+          <input type="radio" name="translateMode" value="general" checked>
+          <span>General</span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="translateMode" value="technical">
+          <span>🎓 Tech/AI</span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="translateMode" value="academic">
+          <span>📚 Academic</span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="translateMode" value="d2l">
+          <span>🧠 D2L</span>
+        </label>
+      </div>
+      <div class="input-container">
+        <textarea 
+          id="inputText" 
+          placeholder="Enter text to translate..." 
+          rows="4"
+        ></textarea>
+        <button id="speakOriginalBtn" class="speak-original-btn" title="Read original text aloud">
+          🔊
+        </button>
+      </div>
+      <button id="translateBtn" class="translate-btn">
+        <span id="btnText">Translate</span>
+      </button>
+      <div id="result" class="result"></div>
+      <button id="speakBtn" class="speak-btn" style="display: none;">
+        🔊 Read Translation
+      </button>
+    </div>
+
+    <div class="footer">
+      <p class="tip">💡 Supports up to 1000 characters | Bi-directional CN-EN</p>
+    </div>
+  </div>
+
+  <script src="scripts/marker.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
+

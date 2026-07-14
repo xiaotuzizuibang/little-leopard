@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt 清理测试 - Little Leopard</title>
+  <style>
+    body {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #D4A017;
+      border-bottom: 3px solid #D4A017;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .test-case {
+      background: #f9f9f9;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 4px solid #2196F3;
+      border-radius: 4px;
+    }
+    .test-case h4 {
+      margin: 0 0 10px 0;
+      color: #2196F3;
+    }
+    .input-text {
+      background: #2d2d2d;
+      color: #4CAF50;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 5px 0;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .expected-text {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 5px 0;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .result {
+      background: #fff3e0;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      border-left: 4px solid #ff9800;
+    }
+    .pass {
+      background: #e8f5e9;
+      border-left-color: #4CAF50;
+    }
+    .fail {
+      background: #ffebee;
+      border-left-color: #f44336;
+    }
+    button {
+      background: linear-gradient(145deg, #D4A017, #B8860B);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 10px 5px;
+      font-size: 14px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212,160,23,0.3);
+    }
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      flex: 1;
+      background: linear-gradient(145deg, #FFF8E1, #FFE082);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #B8860B;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧹 Prompt 清理功能测试</h1>
+
+  <div class="test-section">
+    <h2>📊 测试统计</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalTests">0</div>
+        <div class="stat-label">总测试数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="passedTests">0</div>
+        <div class="stat-label">通过</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="failedTests">0</div>
+        <div class="stat-label">失败</div>
+      </div>
+    </div>
+    <button onclick="runAllTests()">🧪 运行所有测试</button>
+    <button onclick="clearResults()">🗑️ 清除结果</button>
+  </div>
+
+  <div class="test-section">
+    <h2>🔬 预定义测试用例</h2>
+    <div id="testCases"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>✍️ 自定义测试</h2>
+    <label><strong>输入带 Prompt 的文本：</strong></label>
+    <textarea id="customInput" placeholder="例如：[《动手学深度学习》专业翻译] 深度学习是机器学习的一个分支"></textarea>
+    <button onclick="testCustomInput()">测试自定义输入</button>
+    <div id="customResult"></div>
+  </div>
+
+  <script>
+    // 测试用例
+    const testCases = [
+      {
+        name: 'D2L 中文提示',
+        input: '[《动手学深度学习》专业翻译：保持数学公式、算法名称、技术术语的准确性，使用教材标准译名] 深度学习是机器学习的一个分支。',
+        expected: '深度学习是机器学习的一个分支。'
+      },
+      {
+        name: 'D2L 英文提示',
+        input: '["Dive into Deep Learning" Professional Translation: Preserve mathematical formulas, algorithm names, technical terms with textbook standard translations] Deep learning is a branch of machine learning.',
+        expected: 'Deep learning is a branch of machine learning.'
+      },
+      {
+        name: '技术文档翻译',
+        input: '[技术文档翻译] 这是一个技术文档的翻译示例。',
+        expected: '这是一个技术文档的翻译示例。'
+      },
+      {
+        name: '学术论文翻译',
+        input: '[学术论文翻译，保持专业术语准确性，遵循学术翻译标准] 本文提出了一种新的神经网络架构。',
+        expected: '本文提出了一种新的神经网络架构。'
+      },
+      {
+        name: 'AI/ML 翻译',
+        input: '[AI/机器学习专业翻译，保持模型名称、算法术语、评估指标的准确性] Transformer 使用自注意力机制。',
+        expected: 'Transformer 使用自注意力机制。'
+      },
+      {
+        name: '高密度技术文档',
+        input: '[高密度技术文档翻译，严格保持专业术语] 卷积神经网络（CNN）广泛应用于计算机视觉。',
+        expected: '卷积神经网络（CNN）广泛应用于计算机视觉。'
+      },
+      {
+        name: 'Technical Translation',
+        input: '[Technical Translation] This is a technical document.',
+        expected: 'This is a technical document.'
+      },
+      {
+        name: 'Academic Paper Translation',
+        input: '[Academic Paper Translation - Maintain technical accuracy and academic standards] This paper proposes a novel approach.',
+        expected: 'This paper proposes a novel approach.'
+      },
+      {
+        name: 'AI/ML Professional Translation',
+        input: '[AI/ML Professional Translation - Preserve model names, algorithmic terms, evaluation metrics] BERT is a transformer-based model.',
+        expected: 'BERT is a transformer-based model.'
+      },
+      {
+        name: 'High-density Technical',
+        input: '[High-density Technical Translation - Strictly preserve technical terms] Convolutional Neural Networks are widely used.',
+        expected: 'Convolutional Neural Networks are widely used.'
+      },
+      {
+        name: '无提示的普通文本',
+        input: '这是一段普通的文本，没有任何提示前缀。',
+        expected: '这是一段普通的文本，没有任何提示前缀。'
+      },
+      {
+        name: '多个方括号',
+        input: '[提示1] [提示2] 实际内容',
+        expected: '实际内容'
+      }
+    ];
+
+    let totalTests = 0;
+    let passedTests = 0;
+    let failedTests = 0;
+
+    // Prompt 清理函数（从 background.js 复制）
+    function removeContextPrefix(text) {
+      if (!text) return text;
+      
+      const prefixPatterns = [
+        // 中文提示模式
+        /^\[.*?技术.*?翻译.*?\]\s*/i,
+        /^\[.*?学术.*?翻译.*?\]\s*/i,
+        /^\[.*?专业翻译.*?\]\s*/i,
+        /^\[.*?动手学深度学习.*?\]\s*/i,
+        /^\[.*?深度学习.*?翻译.*?\]\s*/i,
+        /^\[.*?机器学习.*?翻译.*?\]\s*/i,
+        /^\[.*?AI.*?翻译.*?\]\s*/i,
+        /^\[《.*?》.*?翻译.*?\]\s*/i,
+        /^\[高密度.*?翻译.*?\]\s*/i,
+        
+        // 英文提示模式
+        /^\[.*?Technical.*?Translation.*?\]\s*/i,
+        /^\[.*?Academic.*?Translation.*?\]\s*/i,
+        /^\[.*?Professional.*?Translation.*?\]\s*/i,
+        /^\[.*?Dive into Deep Learning.*?\]\s*/i,
+        /^\[.*?Deep Learning.*?Translation.*?\]\s*/i,
+        /^\[.*?Machine Learning.*?Translation.*?\]\s*/i,
+        /^\[.*?AI.*?ML.*?Translation.*?\]\s*/i,
+        /^\[".*?".*?Translation.*?\]\s*/i,
+        /^\[High-density.*?Translation.*?\]\s*/i,
+        
+        // 通用方括号提示
+        /^\[[\u4e00-\u9fa5a-zA-Z0-9\s,，、。：:；;！!？?\-\—\–\/]+\]\s*/
+      ];
+      
+      let cleaned = text;
+      let maxIterations = 5;
+      let iteration = 0;
+      
+      while (iteration < maxIterations) {
+        let foundMatch = false;
+        for (const pattern of prefixPatterns) {
+          const before = cleaned;
+          cleaned = cleaned.replace(pattern, '');
+          if (before !== cleaned) {
+            foundMatch = true;
+            break;
+          }
+        }
+        if (!foundMatch) break;
+        iteration++;
+      }
+      
+      return cleaned.trim();
+    }
+
+    // 运行单个测试
+    function runTest(testCase, index) {
+      const result = removeContextPrefix(testCase.input);
+      const passed = result === testCase.expected;
+      
+      if (passed) {
+        passedTests++;
+      } else {
+        failedTests++;
+      }
+      totalTests++;
+
+      const resultDiv = document.createElement('div');
+      resultDiv.className = `test-case result ${passed ? 'pass' : 'fail'}`;
+      resultDiv.innerHTML = `
+        <h4>${passed ? '✅' : '❌'} 测试 ${index + 1}: ${testCase.name}</h4>
+        <div><strong>输入:</strong></div>
+        <div class="input-text">${escapeHtml(testCase.input)}</div>
+        <div><strong>预期输出:</strong></div>
+        <div class="expected-text">${escapeHtml(testCase.expected)}</div>
+        <div><strong>实际输出:</strong></div>
+        <div class="expected-text" style="background: ${passed ? '#e8f5e9' : '#ffebee'}">${escapeHtml(result)}</div>
+        ${!passed ? `<div style="color: #f44336; margin-top: 10px;"><strong>❌ 不匹配！</strong></div>` : ''}
+      `;
+      
+      return resultDiv;
+    }
+
+    // 运行所有测试
+    function runAllTests() {
+      totalTests = 0;
+      passedTests = 0;
+      failedTests = 0;
+
+      const container = document.getElementById('testCases');
+      container.innerHTML = '';
+
+      testCases.forEach((testCase, index) => {
+        const resultDiv = runTest(testCase, index);
+        container.appendChild(resultDiv);
+      });
+
+      updateStats();
+      
+      // 滚动到结果
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 测试自定义输入
+    function testCustomInput() {
+      const input = document.getElementById('customInput').value;
+      if (!input.trim()) {
+        alert('请输入测试文本！');
+        return;
+      }
+
+      const result = removeContextPrefix(input);
+      const resultDiv = document.getElementById('customResult');
+      
+      resultDiv.innerHTML = `
+        <div class="test-case result">
+          <h4>🔬 自定义测试结果</h4>
+          <div><strong>输入:</strong></div>
+          <div class="input-text">${escapeHtml(input)}</div>
+          <div><strong>清理后:</strong></div>
+          <div class="expected-text">${escapeHtml(result)}</div>
+          <div style="margin-top: 10px;">
+            <strong>是否符合预期？</strong>
+            ${input !== result ? '✅ 已移除提示' : '⚠️ 未检测到提示或保持不变'}
+          </div>
+        </div>
+      `;
+    }
+
+    // 清除结果
+    function clearResults() {
+      document.getElementById('testCases').innerHTML = '';
+      document.getElementById('customResult').innerHTML = '';
+      totalTests = 0;
+      passedTests = 0;
+      failedTests = 0;
+      updateStats();
+    }
+
+    // 更新统计
+    function updateStats() {
+      document.getElementById('totalTests').textContent = totalTests;
+      document.getElementById('passedTests').textContent = passedTests;
+      document.getElementById('failedTests').textContent = failedTests;
+    }
+
+    // HTML 转义
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 初始化
+    console.log('🧹 Prompt 清理测试页面已加载');
+    console.log(`📊 共 ${testCases.length} 个测试用例`);
+  </script>
+</body>
+</html>
+
