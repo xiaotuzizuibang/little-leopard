@@ -69,8 +69,8 @@
 1. 克隆或下载本仓库：
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/xiaotuzizuibang/little-leopard.git
+cd little-leopard
 ```
 
 2. 打开 Chrome，访问：`chrome://extensions/`
