@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小豹翻译  弹窗演示</title>
+  <link rel="stylesheet" href="../../assets/popup.css" />
+  <style>
+    html, body {
+      width: 420px !important;
+      min-height: 560px !important;
+      margin: 0;
+      overflow: hidden;
+    }
+    .popup-container {
+      min-height: 560px;
+    }
+    .mode-row {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px 0;
+      flex-wrap: wrap;
+    }
+    .mode-chip {
+      border: 1px solid rgba(91,58,41,0.2);
+      background: #fff8df;
+      color: #5B3A29;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .mode-chip.active {
+      background: linear-gradient(145deg, #D4A017, #B8860B);
+      color: #fff;
+      border-color: transparent;
+    }
+    .demo-note {
+      margin: 12px 16px 16px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.65);
+      border: 1px dashed rgba(91,58,41,0.25);
+      font-size: 12px;
+      color: #5B3A29;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>🐆 Little Leopard Translator</h1>
+      <p class="header-tip">Select text to translate | <kbd>Ctrl+Q</kbd> Shortcut</p>
+      <button id="openWindowBtn" class="open-window-btn" type="button" title="Open in new window (stay open)">
+        📌 Pin Window
+      </button>
+    </div>
+
+    <div class="mode-row">
+      <span class="mode-chip">General</span>
+      <span class="mode-chip">Tech/AI</span>
+      <span class="mode-chip">Academic</span>
+      <span class="mode-chip active">🧠 D2L</span>
+    </div>
+
+    <div class="highlight-section">
+      <h2>📚 Reading Markers</h2>
+      <div class="marker-types">
+        <button class="marker-type-btn active" data-type="learned" type="button">💡 Learned</button>
+        <button class="marker-type-btn" data-type="question" type="button">❓ Question</button>
+        <button class="marker-type-btn" data-type="strikethrough" type="button">✂️ Delete</button>
+      </div>
+      <div class="marker-controls">
+        <label class="toggle-container">
+          <input type="checkbox" id="highlightToggle" checked />
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Enable Marker Mode</span>
+        </label>
+        <button id="viewMarkersBtn" class="view-markers-btn" type="button">
+          📋 View All (<span id="markerCount">12</span>)
+        </button>
+      </div>
+      <p class="highlight-tip">
+        💡 <kbd>Ctrl+L</kbd> Learned | <kbd>Ctrl+Q</kbd> Question | <kbd>Ctrl+D</kbd> Delete | <kbd>Alt+Click</kbd> Remove
+      </p>
+    </div>
+
+    <div class="demo-note">
+      演示截图：展示弹窗入口、Pin Window、标记模式与 D2L 专业模式。
+    </div>
+  </div>
+</body>
+</html>

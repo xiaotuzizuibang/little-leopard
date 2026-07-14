@@ -14,6 +14,7 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](./manifest.json)
 
 <p>
+  <a href="#-效果预览">预览</a> ·
   <a href="#-功能特性">功能</a> ·
   <a href="#-安装">安装</a> ·
   <a href="#-使用方法">使用</a> ·
@@ -38,6 +39,20 @@
 - **固定窗口**：适合 PDF 复制粘贴翻译，窗口保持置顶
 
 > 适合：读英文文档、刷论文、学 D2L、做阅读笔记的同学。
+
+---
+
+## 📸 效果预览
+
+| 划词翻译 | 学习标记 |
+|:---:|:---:|
+| ![划词翻译](docs/screenshots/01-selection.png) | ![学习标记](docs/screenshots/02-markers.png) |
+
+| arXiv 双语阅读 | 扩展弹窗 |
+|:---:|:---:|
+| ![arXiv 双语阅读](docs/screenshots/03-arxiv.png) | ![扩展弹窗](docs/screenshots/04-popup.png) |
+
+> 以上为基于真实扩展 UI 样式制作的演示截图，便于快速了解产品形态。
 
 ---
 

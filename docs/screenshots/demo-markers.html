@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小豹翻译  学习标记演示</title>
+  <link rel="stylesheet" href="../../assets/content.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f4f1ea;
+      color: #1f2937;
+    }
+    .chrome-bar {
+      height: 42px;
+      background: #e8e4dc;
+      border-bottom: 1px solid #d4cfc4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+    }
+    .dots span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .dots span:nth-child(1) { background: #ff5f57; }
+    .dots span:nth-child(2) { background: #febc2e; }
+    .dots span:nth-child(3) { background: #28c840; }
+    .url {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #d0c9bb;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 36px 48px 60px;
+      background: #fff;
+      min-height: calc(100vh - 42px);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #92400e;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 28px; margin: 0 0 10px; }
+    .meta { color: #6b7280; font-size: 13px; margin-bottom: 20px; }
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .legend span {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .legend .l { background: #FFF176; color: #5B3A29; }
+    .legend .q { background: #FF6B6B; color: #fff; }
+    .legend .d { background: #d1d5db; color: #374151; text-decoration: line-through; }
+    p {
+      font-size: 17px;
+      line-height: 1.8;
+      margin: 0 0 16px;
+      color: #374151;
+    }
+    .xiaobao-highlight {
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+    .marker-learned {
+      background: #FFF176 !important;
+      box-shadow: 0 2px 4px rgba(255, 241, 118, 0.35);
+    }
+    .marker-question {
+      background: #FF6B6B !important;
+      color: #fff !important;
+      box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+    }
+    .marker-strikethrough {
+      background: #e5e7eb !important;
+      color: #6b7280 !important;
+      text-decoration: line-through;
+    }
+    .tip {
+      margin-top: 28px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fff8e1;
+      border: 1px solid rgba(212,160,23,0.35);
+      color: #5B3A29;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    kbd {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      padding: 1px 6px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chrome-bar">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="url">https://d2l.ai/chapter_attention-mechanisms/attention-cues.html</div>
+  </div>
+  <div class="page">
+    <div class="badge">DEMO  Study Markers</div>
+    <h1>Attention Cues</h1>
+    <div class="meta">Dive into Deep Learning  Reading with markers</div>
+    <div class="legend">
+      <span class="l">💡 Learned</span>
+      <span class="q">❓ Question</span>
+      <span class="d">✂️ Delete</span>
+    </div>
+    <p>
+      Thank you for your interest in our work. In this section we will review
+      <span class="xiaobao-highlight marker-learned">attention mechanisms that allow models to focus on the most relevant parts of the input</span>
+      when making predictions.
+    </p>
+    <p>
+      Early sequence models often struggled with long-range dependencies.
+      <span class="xiaobao-highlight marker-question">Why does self-attention scale quadratically with sequence length?</span>
+      Understanding this trade-off helps you choose architectures for long documents.
+    </p>
+    <p>
+      <span class="xiaobao-highlight marker-strikethrough">This outdated paragraph about pure RNN decoders can be skipped for modern practice.</span>
+      Instead, focus on multi-head attention, residual connections, and layer normalization.
+    </p>
+    <p>
+      With markers, you can revisit difficult sentences later and export notes as Markdown
+      for spaced review.
+    </p>
+    <div class="tip">
+      快捷键：<kbd>Ctrl+L</kbd> 学到了  <kbd>Ctrl+Q</kbd> 不理解  <kbd>Ctrl+D</kbd> 删除  <kbd>Alt+Click</kbd> 移除
+    </div>
+  </div>
+</body>
+</html>
