@@ -52,8 +52,6 @@
 |:---:|:---:|
 | ![arXiv 双语阅读](docs/screenshots/03-arxiv.png) | ![扩展弹窗](docs/screenshots/04-popup.png) |
 
-> 以上为基于真实扩展 UI 样式制作的演示截图，便于快速了解产品形态。
-
 ---
 
 ## ✨ 功能特性
